@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EfectivoYa | Evaluación Digital</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
+        .container { max-width: 450px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .input-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; }
+        .btn-submit { width: 100%; padding: 15px; background: #000; color: white; border: none; border-radius: 8px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Solicitud EfectivoYa</h2>
+    <form id="loanForm" onsubmit="evaluarRiesgo(event)">
+        <input type="number" id="monto" class="input-field" placeholder="Monto deseado ($)" required>
+        <input type="number" id="ingresos" class="input-field" placeholder="Ingresos mensuales ($)" required>
+        <input type="number" id="gastos" class="input-field" placeholder="Gastos fijos mensuales ($)" required>
+        <button type="submit" class="btn-submit">Analizar mi capacidad</button>
+    </form>
+</div>
+
+<script>
+    function evaluarRiesgo(event) {
+        event.preventDefault();
+        
+        const monto = parseInt(document.getElementById('monto').value);
+        const ingresos = parseInt(document.getElementById('ingresos').value);
+        const gastos = parseInt(document.getElementById('gastos').value);
+        
+        // 1. ANÁLISIS DE RIESGO
+        const capacidadDisponible = ingresos - gastos;
+        
+        // Regla: No prestar si la cuota estimada (ejemplo 50%) supera la capacidad
+        if (monto > (capacidadDisponible * 2)) {
+            alert("⚠️ ANÁLISIS DE RIESGO: El monto solicitado es muy alto para tu capacidad actual. Sistema recomienda máximo: $" + (capacidadDisponible * 2));
+            return;
+        }
+
+        // 2. ENVÍO AL WHATSAPP CON RESULTADO DEL ANÁLISIS
+        const texto = `*ANÁLISIS COMPLETADO*%0A%0A👤 Solicitante: Aprobado por sistema.%0A💰 Monto solicitado: $${monto}%0A📊 Análisis: Usuario con capacidad de pago validada.%0A%0A*¡Proceder con desembolso!*`;
+        
+        window.location.href = "https://wa.me/573148934475?text=" + texto;
+    }
+</script>
+</body>
+</html>
